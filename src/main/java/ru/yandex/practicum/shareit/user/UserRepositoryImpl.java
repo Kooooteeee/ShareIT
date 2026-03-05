@@ -1,10 +1,10 @@
 package ru.yandex.practicum.shareit.user;
 
 import org.springframework.stereotype.Repository;
+import ru.yandex.practicum.shareit.exception.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -20,29 +20,28 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> update(User newUser) {
+    public User update(User newUser) {
         if (!users.containsKey(newUser.getId())) {
-            return Optional.empty();
+            throw new NotFoundException("Такого пользователя нет!");
         }
         users.put(newUser.getId(), newUser);
-        return Optional.of(newUser);
+        return newUser;
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public void deleteById(Long id) {
         if (!users.containsKey(id)) {
-            return false;
+            throw new NotFoundException("Такого пользователя нет!");
         }
         users.remove(id);
-        return true;
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public User findById(Long id) {
         if (!users.containsKey(id)) {
-            return Optional.empty();
+            throw new NotFoundException("Такого пользователя нет!");
         }
-        return Optional.of(users.get(id));
+        return users.get(id);
     }
 
     @Override

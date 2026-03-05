@@ -1,6 +1,7 @@
 package ru.yandex.practicum.shareit.item;
 
 import org.springframework.stereotype.Repository;
+import ru.yandex.practicum.shareit.exception.NotFoundException;
 
 import java.util.*;
 
@@ -17,29 +18,28 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Optional<Item> update(Item newItem) {
+    public Item update(Item newItem) {
         if (!items.containsKey(newItem.getId())) {
-            return Optional.empty();
+            throw new NotFoundException("Такой вещи нет!");
         }
         items.put(newItem.getId(), newItem);
-        return Optional.of(newItem);
+        return newItem;
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public void deleteById(Long id) {
         if (!items.containsKey(id)) {
-            return false;
+            throw new NotFoundException("Такой вещи нет!");
         }
         items.remove(id);
-        return true;
     }
 
     @Override
-    public Optional<Item> findById(Long id) {
+    public Item findById(Long id) {
         if (!items.containsKey(id)) {
-            return Optional.empty();
+            throw new NotFoundException("Такой вещи нет!");
         }
-        return Optional.of(items.get(id));
+        return items.get(id);
     }
 
     @Override

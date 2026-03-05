@@ -17,55 +17,41 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto create(ItemDto item, Long userId) {
         Item newItem = ItemMapper.toItem(item);
-        newItem.setOwner(userRepository.findById(userId).orElseThrow(() ->
-                new NotFoundException("Такого пользователя нет!")));
+        newItem.setOwner(userRepository.findById(userId));
         return ItemMapper.toItemDto(itemRepository.create(newItem));
     }
 
     @Override
     public ItemDto update(Long itemId, ItemDto newItem, Long userId) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new NotFoundException("Такого пользователя нет!");
-        }
-        if (!itemRepository.findById(itemId).orElseThrow(() ->
-                new NotFoundException("Такой вещи нет!")).getOwner().getId().equals(userId)) {
+        userRepository.findById(userId);
+        if (!itemRepository.findById(itemId).getOwner().getId().equals(userId)) {
             throw new NotFoundException("Пользователь не является владельцем!");
         }
-        Item item = itemRepository.findById(itemId).get();
+        Item item = itemRepository.findById(itemId);
         item.setName(newItem.getName() != null ? newItem.getName() : item.getName());
         item.setDescription(newItem.getDescription() != null ? newItem.getDescription() : item.getDescription());
         item.setAvailable(newItem.getAvailable() != null ? newItem.getAvailable() : item.getAvailable());
-        return ItemMapper.toItemDto(itemRepository.update(item).get());
+        return ItemMapper.toItemDto(itemRepository.update(item));
     }
 
     @Override
-    public boolean delete(Long itemId, Long userId) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new NotFoundException("Такого пользователя нет!");
-        }
-        if (!itemRepository.findById(itemId).orElseThrow(() ->
-                new NotFoundException("Такой вещи нет!")).getOwner().getId().equals(userId)) {
+    public void delete(Long itemId, Long userId) {
+        userRepository.findById(userId);
+        if (!itemRepository.findById(itemId).getOwner().getId().equals(userId)) {
             throw new NotFoundException("Пользователь не является владельцем!");
         }
-        return itemRepository.deleteById(itemId);
+        itemRepository.deleteById(itemId);
     }
 
     @Override
     public ItemDto findById(Long itemId, Long userId) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new NotFoundException("Такого пользователя нет!");
-        }
-        if (itemRepository.findById(itemId).isEmpty()) {
-            throw new NotFoundException("Вещь не найдена!");
-        }
-        return ItemMapper.toItemDto(itemRepository.findById(itemId).get());
+        userRepository.findById(userId);
+        return ItemMapper.toItemDto(itemRepository.findById(itemId));
     }
 
     @Override
     public List<ItemDto> findAllForUser(Long userId) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new NotFoundException("Такого пользователя нет!");
-        }
+        userRepository.findById(userId);
         return itemRepository.findAllForUser(userId).stream()
                 .map(ItemMapper::toItemDto)
                 .toList();
@@ -73,9 +59,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> findAllByText(Long userId, String text) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new NotFoundException("Такого пользователя нет!");
-        }
+        userRepository.findById(userId);
         return itemRepository.findAllByText(text).stream()
                 .map(ItemMapper::toItemDto)
                 .toList();

@@ -20,22 +20,23 @@ public class ErrorHandler {
         return Map.of("Not found", e.getMessage());
     }
 
-    @ExceptionHandler(Conflict.class)
+    @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> handlerConflict(Conflict e) {
+    public Map<String, String> handlerConflict(ConflictException e) {
         return Map.of("Conflict", e.getMessage());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidation(MethodArgumentNotValidException e) {
-        return Map.of("error", "Validation error");
-    }
-
-    @ExceptionHandler({MissingRequestHeaderException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
+            MissingRequestHeaderException.class,
+            HttpMessageNotReadableException.class
+    })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleBadRequest(Exception e) {
-        return Map.of("error", e.getMessage());
+        String message = (e instanceof MethodArgumentNotValidException)
+                ? "Validation error"
+                : e.getMessage();
+        return Map.of("error", message);
     }
 
     @ExceptionHandler(Throwable.class)
