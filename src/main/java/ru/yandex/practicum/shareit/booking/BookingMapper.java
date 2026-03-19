@@ -1,12 +1,12 @@
 package ru.yandex.practicum.shareit.booking;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.yandex.practicum.shareit.item.Item;
 import ru.yandex.practicum.shareit.user.User;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BookingMapper {
-
-    private BookingMapper() {
-    }
 
     public static Booking toEntity(BookingCreateDto dto, Item item, User booker) {
         Booking booking = new Booking();
@@ -25,11 +25,11 @@ public final class BookingMapper {
         dto.setEnd(b.getEnd());
         dto.setStatus(b.getStatus().name());
 
-        BookingDto.BookerDto booker = new BookingDto.BookerDto();
+        BookerDto booker = new BookerDto();
         booker.setId(b.getBooker().getId());
         dto.setBooker(booker);
 
-        BookingDto.ItemDto item = new BookingDto.ItemDto();
+        ItemHelpDto item = new ItemHelpDto();
         item.setId(b.getItem().getId());
         item.setName(b.getItem().getName());
         dto.setItem(item);
@@ -37,14 +37,14 @@ public final class BookingMapper {
         return dto;
     }
 
-    private static BookingDto.BookerDto toBookerDto(User user) {
-        BookingDto.BookerDto dto = new BookingDto.BookerDto();
+    private static BookerDto toBookerDto(User user) {
+        BookerDto dto = new BookerDto();
         dto.setId(user.getId());
         return dto;
     }
 
-    private static BookingDto.ItemDto toItemDto(Item item) {
-        BookingDto.ItemDto dto = new BookingDto.ItemDto();
+    private static ItemHelpDto toItemDto(Item item) {
+        ItemHelpDto dto = new ItemHelpDto();
         dto.setId(item.getId());
         dto.setName(item.getName());
         return dto;

@@ -30,7 +30,8 @@ public class ErrorHandler {
             MethodArgumentNotValidException.class,
             MissingRequestHeaderException.class,
             HttpMessageNotReadableException.class,
-            BadRequestException.class
+            BadRequestException.class,
+            ValidationException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleBadRequest(Exception e) {
@@ -40,11 +41,11 @@ public class ErrorHandler {
         return Map.of("error", message);
     }
 
-    @ExceptionHandler(ValidationException.class)
+    /*@ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidation(ValidationException e) {
         return Map.of("error", e.getMessage());
-    }
+    }*/
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

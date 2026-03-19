@@ -13,10 +13,6 @@ public class BookingDto {
     private LocalDateTime end;
     private String status;
     private BookerDto booker;
-    private ItemDto item;
+    private ItemHelpDto item;
 
-    @Data
-    public static class BookerDto { private Long id; }
-    @Data
-    public static class ItemDto { private Long id; private String name; }
 }
