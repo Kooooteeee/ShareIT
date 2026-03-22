@@ -2,14 +2,19 @@ package ru.yandex.practicum.shareit.item;
 
 public class ItemMapper {
     public static ItemDto toItemDto(Item item) {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setId(item.getId());
-        itemDto.setName(item.getName());
-        itemDto.setDescription(item.getDescription());
-        itemDto.setAvailable(item.getAvailable());
-        itemDto.setOwnerId(item.getOwner() != null ? item.getOwner().getId() : null);
-        itemDto.setRequestId(item.getRequest() != null ? item.getRequest().getId() : null);
-        return itemDto;
+        ItemDto dto = new ItemDto();
+        dto.setId(item.getId());
+        dto.setName(item.getName());
+        dto.setDescription(item.getDescription());
+        dto.setAvailable(item.getAvailable());
+        dto.setOwnerId(item.getOwner() != null ? item.getOwner().getId() : null);
+        dto.setRequestId(item.getRequest() != null ? item.getRequest().getId() : null);
+
+        dto.setLastBooking(null);
+        dto.setNextBooking(null);
+        // dto.setComments(List.of());
+
+        return dto;
     }
 
     public static Item toItem(ItemDto itemDto) {

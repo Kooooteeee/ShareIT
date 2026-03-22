@@ -5,7 +5,6 @@ import ru.yandex.practicum.shareit.exception.NotFoundException;
 
 import java.util.*;
 
-@Repository
 public class ItemRepositoryImpl implements ItemRepository {
     private final Map<Long, Item> items = new HashMap<>();
 
