@@ -16,7 +16,7 @@ public class ItemController {
 
     @PostMapping
     public ItemDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
-                          @Valid @RequestBody ItemDto itemDto) {
+                          @RequestBody ItemDto itemDto) {
         return itemService.create(itemDto, userId);
     }
 
@@ -46,7 +46,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
                                  @PathVariable Long itemId,
-                                 @Valid @RequestBody CommentCreateDto dto) {
+                                 @RequestBody CommentCreateDto dto) {
         return itemService.addComment(itemId, userId, dto);
     }
 }

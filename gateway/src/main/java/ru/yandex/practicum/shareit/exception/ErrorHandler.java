@@ -31,4 +31,10 @@ public class ErrorHandler {
 
         return Map.of("error", message);
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> handleInternalError(Exception e) {
+        return Map.of("error", "Internal server error");
+    }
 }
